@@ -1,0 +1,38 @@
+Users Table
+	User ID
+	Username
+	Password Hash
+	Password Salt
+	Email
+
+Tasks
+	Task ID
+	User ID
+	Name
+	Deadline Time
+	Priority
+	Category ID
+	Completed Bool
+
+Subtasks
+	Subtask ID
+	User ID
+	Name
+	Parent Task ID
+	Completed Bool
+
+Events
+	Event ID
+	User ID
+	Name
+	Start Time
+	Time Duration
+	Category ID
+	Parent Task ID
+
+Category
+	Category ID
+	User ID
+	Name
+	Color
+	Parent Category ID
