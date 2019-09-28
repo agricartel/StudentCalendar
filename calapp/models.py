@@ -14,7 +14,7 @@ class Category(models.Model):
         on_delete=models.CASCADE,
     )
     category_name = models.CharField(max_length=300)
-    parent_category = models.ForeignKey("self", on_delete=models.CASCADE)
+    parent_category = models.ForeignKey("self", on_delete=models.CASCADE, null=True, blank=True)
     color_hex = models.CharField(max_length=6)
    
 class Task(models.Model):
@@ -30,7 +30,7 @@ class Task(models.Model):
         ("LOW_PRI", "Low"),
     )
     priority = models.CharField(max_length=15, choices=PRIORITY_CHOICES, default="MED_PRI")
-    category = models.ForeignKey(Category, on_delete=models.CASCADE)
+    category = models.ForeignKey(Category, on_delete=models.CASCADE, null=True, blank=True)
     completed = models.BooleanField()
     
 class Subtask(models.Model):
@@ -48,7 +48,7 @@ class Event(models.Model):
         on_delete=models.CASCADE,
     )
     event_name = models.CharField(max_length=300)
-    parent_task = models.ForeignKey(Task, on_delete=models.CASCADE)
-    category = models.ForeignKey(Category, on_delete=models.CASCADE)
+    parent_task = models.ForeignKey(Task, on_delete=models.CASCADE, null=True, blank=True)
+    category = models.ForeignKey(Category, on_delete=models.CASCADE, null=True, blank=True)
     start_time = models.DateTimeField()
     duration = models.DurationField()
