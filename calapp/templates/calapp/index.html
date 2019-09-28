@@ -1,0 +1,55 @@
+<html>
+
+<head>
+    <title>CALENDAR APP</title>
+</head>
+
+<body>
+
+<h1>Events</h1>
+{% if all_events %}
+    <ul>
+    {% for event in all_events %}
+        <li>{{ event.event_name }}</li>
+    {% endfor %}
+    </ul>
+{% else %}
+    <p>There are no events! Do something with your life!</p>
+{% endif %}
+
+<h1>Tasks</h1>
+{% if tasks %}
+    <ul>
+    {% for task in tasks %}
+        <li>{{ task.task_name }}</li>
+    {% endfor %}
+    </ul>
+{% else %}
+    <p>There are no tasks! Do something with your life!</p>
+{% endif %}
+
+<h1>Subtasks</h1>
+{% if subtasks %}
+    <ul>
+    {% for subtask in subtasks %}
+        <li>{{ subtask.subtask_name }}</li>
+    {% endfor %}
+    </ul>
+{% else %}
+    <p>There are no subtasks! Do something with your life!</p>
+{% endif %}
+
+<h1>Categories</h1>
+{% if categories %}
+    <ul>
+    {% for category in categories %}
+        <li>{{ category.category_name }}</li>
+    {% endfor %}
+    </ul>
+{% else %}
+    <p>There are no categories! Do something with your life!</p>
+{% endif %}
+
+</body>
+
+</html>
