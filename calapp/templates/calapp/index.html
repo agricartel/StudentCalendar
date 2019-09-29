@@ -1,20 +1,54 @@
+<!doctype html>
 <html>
 
 <head>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <title>CALENDAR APP</title>
 </head>
 
 <body>
 
-Welcome, {{ user.get_username }}.
+<script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
 
-<hr>
+
+<nav class="navbar navbar-expand-lg navbar-light bg-light">
+  <a class="navbar-brand" href="/">G.N.C.alendar Task Management Utility</a>
+
+  <div class="collapse navbar-collapse" id="navbarSupportedContent">
+    <ul class="navbar-nav mr-auto">
+      <li class="nav-item active">
+        <a class="nav-link" href="#">Calendar <span class="sr-only">(current)</span></a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" href="./newtask">Add New Task</a>
+      </li>
+    </ul>
+    <ul class="navbar-nav ml-auto">
+      <li class="nav-item">
+        <span class="navbar-text">
+            Welcome, <b>{{ user.get_username }}</b>!
+        </span>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" href="#"><u>Log Out</u></a>
+      </li>
+    </ul>
+  </div>
+</nav>
 
 <h1>Events</h1>
 {% if all_events %}
     <ul>
     {% for event in all_events %}
-        <li>{{ event.event_name }}</li>
+        <li>
+        <b>{{ event.event_name }}</b> <a href="./deleteevent?id={{ event.id }}">X</a><br>
+        <i>Starts: {{ event.start_time }}; Lasts {{ event.duration }}<br></i>
+        Parent Task: {{ event.parent_task }}
+        </li>
     {% endfor %}
     </ul>
 {% else %}
@@ -25,7 +59,12 @@ Welcome, {{ user.get_username }}.
 {% if tasks %}
     <ul>
     {% for task in tasks %}
-        <li>{{ task.task_name }}</li>
+        <li>
+        <b>{{ task.task_name }}</b> <a href="./deletetask?id={{ task.id }}">X</a><br>
+        <i>Deadline: {{ task.deadline }}; Priority: {{ task.get_priority_display }}</i><br>
+        {% if task.estimatedDuration %}
+            Estimated Duration: {{ task.estimatedDuration }} <a href="./allocatetasktime?id={{ task.id }}">Auto-Allocate Time</a><br>
+        {% endif %}
         {% if task.subtask_set %}
             <ul>
             {% for subtask in task.subtask_set.all %}
@@ -33,6 +72,8 @@ Welcome, {{ user.get_username }}.
             {% endfor %}
             </ul>
         {% endif %}
+        <br>
+        </li>
     {% endfor %}
     </ul>
 {% else %}

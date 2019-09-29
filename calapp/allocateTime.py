@@ -1,6 +1,6 @@
 #Imported variables from table
 START_TIME = 0 #in DateTime format normally. end_time - start_time returns seconds
-END_TIME = 43200 #in DateTime format normally
+END_TIME = 324234 #in DateTime format normally
 #start time - end time = answer in seconds
 CHUNK_SIZE = 15 #in minutes. default: 1 chunk = 15 mins
 MAX_WORK_TIME = 120 #in minutes. default: 120 mins = 2 hours
@@ -95,12 +95,30 @@ class BreakBlock(Block): # a block designed for breaks, assosiated with a specif
         self.end = end
         self.name = "breakblock"
 
+import datetime
+
 def main():
     schedule = [] #list of all Blocks within current assignment duration. ordered by start time - put events into schedule, insert new TaskBlocks.
     #predefined events are generic Blocks, TaskBlocks are blocks for the Task, BreakBlocks are assigned after TaskBlocks if no event exists there
-    task1 = Task("dab", 24)
-    schedule.append(Block(12,15))
-    schedule.append(Block(30,33))
+    dnow = datetime.datetime.now()
+    currTimeSeconds = int(datetime.datetime.now().timestamp())
+    #endTimeSeconds = (currTimeSeconds + 528 + 60*60*24*2)
+    endTimeSeconds = (currTimeSeconds + 528 + 60*60*24*2)
+    START_TIME = 0
+    END_TIME = timeConvert((dnow + datetime.timedelta(hours=12)).timestamp(), dnow.timestamp())
+    task1 = Task("dab", 120)
+    #schedule.append(Block(
+    #    int(((currTimeSeconds + 60*60*24*0.05) - currTimeSeconds) / 60),
+    #    int(((currTimeSeconds + 60*60*24*0.15) - currTimeSeconds) / 60)
+    #))
+    schedule.append(Block(
+        timeConvert((dnow + datetime.timedelta(hours=3)).timestamp(), dnow.timestamp()),
+        timeConvert((dnow + datetime.timedelta(hours=4)).timestamp(), dnow.timestamp())
+    ))
+    print((dnow + datetime.timedelta(hours=3)).timestamp())
+    print(timeConvert((dnow + datetime.timedelta(hours=3)).timestamp(), dnow.timestamp()))
+    print((timeConvert((dnow + datetime.timedelta(hours=3)).timestamp(), dnow.timestamp())) * CHUNK_SIZE)
+    #schedule.append(Block((currTimeSeconds + 60*60*24*1.30) - currTimeSeconds,(currTimeSeconds + 60*60*24*1.40) - currTimeSeconds))
     schedule = task1.assignTime(schedule) #potential feature: allows two tasks of same priority to alternate by returning
     #task with same name and remaining chunks, and then running assignTime on the next task, returning, etc.
     for i in range(0, len(schedule)):
