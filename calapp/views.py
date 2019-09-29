@@ -10,10 +10,13 @@ from .models import Category
 
 # Create your views here.
 def index(request):
-    all_events = Event.objects.order_by("event_name")
-    tasks = Task.objects.order_by("deadline")
-    subtasks = Subtask.objects.all
-    categories = Category.objects.all
+    if (not request.user.is_authenticated):
+        return HttpResponse("Not logged in!")
+        
+    all_events = Event.objects.filter(user__exact=request.user).order_by("event_name")
+    tasks = Task.objects.filter(user__exact=request.user).order_by("deadline")
+    subtasks = Subtask.objects.filter(user__exact=request.user).all
+    categories = Category.objects.filter(user__exact=request.user).all
     
     template = loader.get_template("calapp/index.html")
     context = {
