@@ -14,6 +14,9 @@ BREAK_MODIFIER = (int)(MAX_WORK_TIME / MAX_BREAK_TIME) #fraction of max block si
 def timeConvert(time, start): #converts DateTime to chunk number
     return (int)((time - start) / (60 * CHUNK_SIZE)) - 1
 
+def chunkConvert(chunk, start): #converts chunk number to DateTime
+    return ((chunk + 1) * 60 * CHUNK_SIZE) + start
+
 class Block:
     def __init__(self, start, end):
         self.start = start
