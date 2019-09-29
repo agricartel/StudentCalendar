@@ -8,8 +8,11 @@ MAX_BREAK_TIME = 30 #in minutes. default: 30 mins
 
 #converted constants
 MAX_BLOCK_SIZE = (int)(MAX_WORK_TIME / CHUNK_SIZE) #max block for TaskBlocks. default is 8 chunks = 2 hours
-TOTAL_CHUNKS = (int)(((END_TIME - START_TIME) / 3600) * (60 / CHUNK_SIZE)) #amount of chunks from now till deadline. each number from 0 to total blocks respresents a specific 15 min period
+TOTAL_CHUNKS = (int)((END_TIME - START_TIME) / (60 * CHUNK_SIZE)) #amount of chunks from now till deadline. each number from 0 to total blocks respresents a specific 15 min period
 BREAK_MODIFIER = (int)(MAX_WORK_TIME / MAX_BREAK_TIME) #fraction of max block size that can be dedicated to breaks
+
+def timeConvert(time, start): #converts DateTime to chunk number
+    return (int)((time - start) / (60 * CHUNK_SIZE)) - 1
 
 class Block:
     def __init__(self, start, end):
