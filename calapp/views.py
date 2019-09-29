@@ -11,9 +11,10 @@ from .models import Category
 # Create your views here.
 def index(request):
     all_events = Event.objects.order_by("event_name")
-    tasks = Task.objects.order_by("?")
-    subtasks = Subtask.objects.order_by("?")
-    categories = Category.objects.order_by("?")
+    tasks = Task.objects.order_by("deadline")
+    subtasks = Subtask.objects.all
+    categories = Category.objects.all
+    
     template = loader.get_template("calapp/index.html")
     context = {
         "all_events": all_events,

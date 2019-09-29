@@ -22,21 +22,17 @@
     <ul>
     {% for task in tasks %}
         <li>{{ task.task_name }}</li>
+        {% if task.subtask_set %}
+            <ul>
+            {% for subtask in task.subtask_set.all %}
+                <li>{{ subtask.subtask_name }}</li>
+            {% endfor %}
+            </ul>
+        {% endif %}
     {% endfor %}
     </ul>
 {% else %}
     <p>There are no tasks! Do something with your life!</p>
-{% endif %}
-
-<h1>Subtasks</h1>
-{% if subtasks %}
-    <ul>
-    {% for subtask in subtasks %}
-        <li>{{ subtask.subtask_name }}</li>
-    {% endfor %}
-    </ul>
-{% else %}
-    <p>There are no subtasks! Do something with your life!</p>
 {% endif %}
 
 <h1>Categories</h1>
