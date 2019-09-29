@@ -29,6 +29,54 @@ def index(request):
     }
     return HttpResponse(template.render(context, request))
     
+# Create your views here.
+def indextest(request):
+    if (not request.user.is_authenticated):
+        return HttpResponse("Not logged in!")
+        
+    all_events = Event.objects.filter(user__exact=request.user).order_by("event_name")
+    tasks = Task.objects.filter(user__exact=request.user).order_by("deadline")
+    subtasks = Subtask.objects.filter(user__exact=request.user).all
+    categories = Category.objects.filter(user__exact=request.user).all
+    
+    mon_events = Event.objects.filter(user__exact=request.user).filter(start_time__week_day=2).order_by("event_name")
+    tue_events = Event.objects.filter(user__exact=request.user).filter(start_time__week_day=3).order_by("event_name")
+    wed_events = Event.objects.filter(user__exact=request.user).filter(start_time__week_day=4).order_by("event_name")
+    thr_events = Event.objects.filter(user__exact=request.user).filter(start_time__week_day=5).order_by("event_name")
+    fri_events = Event.objects.filter(user__exact=request.user).filter(start_time__week_day=6).order_by("event_name")
+    
+    for event in all_events:
+        event.ending_time = event.start_time + event.duration
+        
+    for event in mon_events:
+        event.ending_time = event.start_time + event.duration
+        
+    for event in tue_events:
+        event.ending_time = event.start_time + event.duration
+        
+    for event in wed_events:
+        event.ending_time = event.start_time + event.duration
+        
+    for event in thr_events:
+        event.ending_time = event.start_time + event.duration
+        
+    for event in fri_events:
+        event.ending_time = event.start_time + event.duration
+    
+    template = loader.get_template("calapp/caltest.html")
+    context = {
+        "all_events": all_events,
+        "tasks": tasks,
+        "subtasks": subtasks,
+        "categories": categories,
+        "mon_events": mon_events,
+        "tue_events": tue_events,
+        "wed_events": wed_events,
+        "thr_events": thr_events,
+        "fri_events": fri_events,
+    }
+    return HttpResponse(template.render(context, request))
+    
     
 
 from .forms import TaskForm
