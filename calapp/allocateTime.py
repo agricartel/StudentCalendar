@@ -42,6 +42,8 @@ class Task: #a complete task, allocates TaskBlocks
                     newStart = -1;
                     newEnd = 0;
         schedule.remove(endBlock)
+        if(remain > 0):
+            print("You don't have enough time to finish all your tasks with your settings!")
         return schedule
 
     def createTaskBlock(self, start, end, schedule, sIndex): #create one taskblock and, if necessary, breakblocks
@@ -86,7 +88,7 @@ class BreakBlock(Block): # a block designed for breaks, assosiated with a specif
 def main():
     schedule = [] #list of all Blocks within current assignment duration. ordered by start time - put events into schedule, insert new TaskBlocks.
     #predefined events are generic Blocks, TaskBlocks are blocks for the Task, BreakBlocks are assigned after TaskBlocks if no event exists there
-    task1 = Task("dab", 18)
+    task1 = Task("dab", 20)
     task2 = Task("flex", 8)
     schedule.append(Block(12,15))
     schedule.append(Block(30,33))
