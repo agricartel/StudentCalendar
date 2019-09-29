@@ -15,7 +15,7 @@ def timeConvert(time, start): #converts DateTime to chunk number
     return (int)((time - start) / (60 * CHUNK_SIZE)) - 1
 
 def chunkConvert(chunk, start): #converts chunk number to DateTime
-    return ((chunk + 1) * 60 * CHUNK_SIZE) + start
+    return ((chunk) * 60 * CHUNK_SIZE) + start
 
 class Block:
     def __init__(self, start, end):
@@ -107,16 +107,16 @@ def main():
     currTimeSeconds = int(datetime.datetime.now().timestamp())
     #endTimeSeconds = (currTimeSeconds + 528 + 60*60*24*2)
     endTimeSeconds = (currTimeSeconds + 528 + 60*60*24*2)
-    START_TIME = 0
-    END_TIME = timeConvert((dnow + datetime.timedelta(hours=12)).timestamp(), dnow.timestamp())
-    task1 = Task("dab", 120)
+    START_TIME = int(dnow.timestamp())
+    END_TIME = int((dnow + datetime.timedelta(hours=12)).timestamp())
+    task1 = Task("dab", int(120 / CHUNK_SIZE))
     #schedule.append(Block(
     #    int(((currTimeSeconds + 60*60*24*0.05) - currTimeSeconds) / 60),
     #    int(((currTimeSeconds + 60*60*24*0.15) - currTimeSeconds) / 60)
     #))
     schedule.append(Block(
-        timeConvert((dnow + datetime.timedelta(hours=3)).timestamp(), dnow.timestamp()),
-        timeConvert((dnow + datetime.timedelta(hours=4)).timestamp(), dnow.timestamp())
+        timeConvert((dnow + datetime.timedelta(hours=1)).timestamp(), dnow.timestamp()),
+        timeConvert((dnow + datetime.timedelta(hours=2)).timestamp(), dnow.timestamp())
     ))
     print((dnow + datetime.timedelta(hours=3)).timestamp())
     print(timeConvert((dnow + datetime.timedelta(hours=3)).timestamp(), dnow.timestamp()))
@@ -125,6 +125,12 @@ def main():
     schedule = task1.assignTime(schedule) #potential feature: allows two tasks of same priority to alternate by returning
     #task with same name and remaining chunks, and then running assignTime on the next task, returning, etc.
     for i in range(0, len(schedule)):
-        print(schedule[i].name, schedule[i].start, schedule[i].end)
+        fromts = chunkConvert(schedule[i].start, START_TIME)
+        tots = chunkConvert(schedule[i].end, START_TIME)
+        print("------")
+        print(tots - fromts, (tots - fromts) / 60)
+        print(schedule[i].name, schedule[i].start, schedule[i].end, fromts, tots,
+            datetime.datetime.fromtimestamp(fromts).strftime('%Y-%m-%d %H:%M:%S'), datetime.datetime.fromtimestamp(tots).strftime('%Y-%m-%d %H:%M:%S'))
+    print(datetime.datetime.fromtimestamp(chunkConvert(0, START_TIME)).strftime('%Y-%m-%d %H:%M:%S'))
 
 main()
