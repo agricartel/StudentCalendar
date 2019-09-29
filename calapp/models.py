@@ -32,6 +32,7 @@ class Task(models.Model):
     priority = models.CharField(max_length=15, choices=PRIORITY_CHOICES, default="MED_PRI")
     category = models.ForeignKey(Category, on_delete=models.CASCADE, null=True, blank=True)
     completed = models.BooleanField()
+    estimatedDuration = models.DurationField(null=True, blank=True)
     
 class Subtask(models.Model):
     user = models.ForeignKey(
