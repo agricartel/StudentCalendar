@@ -1,8 +1,15 @@
-#1 chunk = 15 mins
+#Imported variables from table
+START_TIME = 0 #in DateTime format normally. end_time - start_time returns seconds
+END_TIME = 43200 #in DateTime format normally
+#start time - end time = answer in seconds
+CHUNK_SIZE = 15 #in minutes. default: 1 chunk = 15 mins
+MAX_WORK_TIME = 120 #in minutes. default: 120 mins = 2 hours
+MAX_BREAK_TIME = 30 #in minutes. default: 30 mins
 
-TOTAL_CHUNKS = 48 #amount of chunks from now till deadline. each number from 0 to total blocks respresents a specific 15 min period
-MAX_BLOCK_SIZE = 8 #max block for TaskBlocks. default is 8 chunks = 2 hours
-BREAK_MODIFIER = 4 #fraction of max block size that can be dedicated to breaks
+#converted constants
+MAX_BLOCK_SIZE = (int)(MAX_WORK_TIME / CHUNK_SIZE) #max block for TaskBlocks. default is 8 chunks = 2 hours
+TOTAL_CHUNKS = (int)(((END_TIME - START_TIME) / 3600) * (60 / CHUNK_SIZE)) #amount of chunks from now till deadline. each number from 0 to total blocks respresents a specific 15 min period
+BREAK_MODIFIER = (int)(MAX_WORK_TIME / MAX_BREAK_TIME) #fraction of max block size that can be dedicated to breaks
 
 class Block:
     def __init__(self, start, end):
@@ -88,12 +95,10 @@ class BreakBlock(Block): # a block designed for breaks, assosiated with a specif
 def main():
     schedule = [] #list of all Blocks within current assignment duration. ordered by start time - put events into schedule, insert new TaskBlocks.
     #predefined events are generic Blocks, TaskBlocks are blocks for the Task, BreakBlocks are assigned after TaskBlocks if no event exists there
-    task1 = Task("dab", 20)
-    task2 = Task("flex", 8)
+    task1 = Task("dab", 24)
     schedule.append(Block(12,15))
     schedule.append(Block(30,33))
-    schedule = task1.assignTime(schedule)
-    schedule = task2.assignTime(schedule) #potential feature: allows two tasks of same priority to alternate by returning
+    schedule = task1.assignTime(schedule) #potential feature: allows two tasks of same priority to alternate by returning
     #task with same name and remaining chunks, and then running assignTime on the next task, returning, etc.
     for i in range(0, len(schedule)):
         print(schedule[i].name, schedule[i].start, schedule[i].end)
